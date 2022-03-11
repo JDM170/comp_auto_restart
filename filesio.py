@@ -19,9 +19,10 @@ class FilesIO:
 
     def get_data(self):
         try:
-            with open(file_name, encoding="utf-8") as f:
+            with open(self.file_name, encoding="utf-8") as f:
                 ret_data = load(f)
         except FileNotFoundError:
             self.create_default_file()
-            ret_data = self.default_values
+            # ret_data = self.default_values
+            return False
         return ret_data
