@@ -13,8 +13,8 @@ default_expr_list = [
 
 
 class MatchIO:
-    def __init__(self, expr_list):
-        self.expr_list = expr_list is not None and expr_list or default_expr_list
+    def __init__(self, expr_list=None):
+        self.expr_list = expr_list is None and default_expr_list or expr_list
 
     def check_arm_name(self, pc_name):
         for r in self.expr_list:
