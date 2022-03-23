@@ -4,7 +4,6 @@
 from sys import exit, argv
 from os import system
 from subprocess import Popen
-from time import sleep
 from filesio import FilesIO
 from match_name import MatchIO
 
@@ -29,15 +28,14 @@ default_values = {
 loaded_file = None
 
 
-def main(comp_key, is_prod):
+def main(comp_key, is_debug):
     global loaded_file
     list_pc_names = loaded_file.get("pc").get(comp_key)
     if list_pc_names is not None:
         for pc_name in list_pc_names:
             formatted_pc_name = matchio.check_arm_name(pc_name)
             if formatted_pc_name is not False:
-                # print("pc_name:", formatted_pc_name)
-                if is_prod is True:
+                if is_debug is False:
                     # system("shutdown /m \\\{} /r /f /t 60 /c \"Плановая перезагрузка компьютера через 1 минуту!\"".format(formatted_pc_name))
                     Popen("shutdown /m \\\{} /r /f /t 60 /c \"Плановая перезагрузка компьютера через 1 минуту!\"".format(formatted_pc_name)).wait()
                 else:
@@ -56,10 +54,9 @@ if __name__ == "__main__":
         if loaded_file is False:
             raise OSError
         matchio = MatchIO(loaded_file.get("expr_list"))
-        main(argv[1], argv[2].strip() == "prod")
+        main(argv[1], argv[2].strip() == "debug")
     except OSError:
         print("Файл с настройками не найден. Создан файл со стандартными настройками.")
-        sleep(20)
         exit()
     except KeyboardInterrupt:
         exit()

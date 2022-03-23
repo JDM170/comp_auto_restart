@@ -22,8 +22,8 @@ class FilesIO:
         try:
             with open(self.file_name, encoding="utf-8", mode="r") as f:
                 ret_data = load(f)
+            return ret_data
         except FileNotFoundError:
             self.create_default_file()
             # ret_data = self.default_values
             return False
-        return ret_data
