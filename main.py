@@ -9,11 +9,6 @@ from match_name import MatchIO
 
 
 default_values = {
-    "expr_list": [
-        [r"^[a-zA-Z]+\d+$", "R54-630300"],  # THE01
-        [r"^\d+[a-zA-Z]+\d+$", "R54-"],  # 630300THE01
-        [r"^[rR]\d*[-]\d+[a-zA-Z]+\d+$", ""]  # R54-630300THE01
-    ],
     "pc": {
         "2": [  # Пятидневка
             "IT01",
@@ -33,7 +28,7 @@ def main(comp_key, is_debug):
     list_pc_names = loaded_file.get("pc").get(comp_key)
     if list_pc_names is not None:
         for pc_name in list_pc_names:
-            formatted_pc_name = matchio.check_arm_name(pc_name)
+            formatted_pc_name = matchio.check_pc_name(pc_name)
             if formatted_pc_name is not False:
                 if is_debug is False:
                     # system("shutdown /m \\\{} /r /f /t 60 /c \"Плановая перезагрузка компьютера через 1 минуту!\"".format(formatted_pc_name))
@@ -53,7 +48,7 @@ if __name__ == "__main__":
         loaded_file = filesio.get_data()
         if loaded_file is False:
             raise OSError
-        matchio = MatchIO(loaded_file.get("expr_list"))
+        matchio = MatchIO()
         main(argv[1], argv[2].strip() == "debug")
     except OSError:
         print("Файл с настройками не найден. Создан файл со стандартными настройками.")
