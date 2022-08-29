@@ -5,7 +5,7 @@ from sys import exit, argv
 from os import system
 from subprocess import Popen
 from filesio import FilesIO
-from match_name import MatchIO
+from m_match_name.main import MatchIO
 
 
 default_values = {
