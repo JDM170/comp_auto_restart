@@ -9,6 +9,8 @@ from m_match_name.main import MatchIO
 
 
 default_values = {
+    "restart_time": 60,
+    "restart_message": "Плановая перезагрузка компьютера через 1 минуту!",
     "pc": {
         "2": [  # Пятидневка
             "IT01",
@@ -27,14 +29,16 @@ def main(comp_key, is_debug):
     global loaded_file
     list_pc_names = loaded_file.get("pc").get(comp_key)
     if list_pc_names is not None:
+        restart_time = loaded_file.get("restart_time")
+        restart_message = loaded_file.get("restart_message")
         for pc_name in list_pc_names:
             formatted_pc_name = matchio.check_pc_name(pc_name)
             if formatted_pc_name is not False:
                 if is_debug is False:
                     # system("shutdown /m \\\{} /r /f /t 60 /c \"Плановая перезагрузка компьютера через 1 минуту!\"".format(formatted_pc_name))
-                    Popen("shutdown /m \\\{} /r /f /t 60 /c \"Плановая перезагрузка компьютера через 1 минуту!\"".format(formatted_pc_name)).wait()
+                    Popen("shutdown /m \\\{} /r /f /t {} /c {}".format(formatted_pc_name, restart_time, restart_message)).wait()
                 else:
-                    print("shutdown /m \\\{} /r /f /t 60 /c \"Плановая перезагрузка компьютера через 1 минуту!\"".format(formatted_pc_name))
+                    print("shutdown /m \\\{} /r /f /t {} /c {}".format(formatted_pc_name, restart_time, restart_message))
     else:
         print("Попробуйте еще раз выбрать область запуска скрипта!")
 
