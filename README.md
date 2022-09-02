@@ -6,6 +6,13 @@
 
 ---
 
+Клонирование:
+```
+git clone https://github.com/JDM170/comp_auto_restart.git --recurse-submodules
+```
+
+---
+
 Запуск:
 ```
 python main.py
