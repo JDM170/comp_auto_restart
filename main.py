@@ -2,21 +2,22 @@
 # -*- coding: utf-8 -*-
 
 from sys import exit, argv
-from os import system
+from os import system, getcwd
 from subprocess import Popen
 from filesio import FilesIO
 from m_match_name.main import MatchIO
+from time import sleep
 
 
 default_values = {
     "restart_time": 60,
     "restart_message": "Плановая перезагрузка компьютера через 1 минуту!",
     "pc": {
-        "2": [  # Пятидневка
+        "1": [  # Пятидневка
             "IT01",
             "IT02"
         ],
-        "7": [  # Цех
+        "2": [  # Цех
             "PIS09",
             "PIS10"
         ]
@@ -37,6 +38,7 @@ def main(comp_key, is_debug):
                 if is_debug is False:
                     # system("shutdown /m \\\{} /r /f /t 60 /c \"Плановая перезагрузка компьютера через 1 минуту!\"".format(formatted_pc_name))
                     Popen("shutdown /m \\\{} /r /f /t {} /c {}".format(formatted_pc_name, restart_time, restart_message)).wait()
+                    sleep(2)
                 else:
                     print("shutdown /m \\\{} /r /f /t {} /c {}".format(formatted_pc_name, restart_time, restart_message))
     else:
@@ -44,18 +46,19 @@ def main(comp_key, is_debug):
 
 
 if __name__ == "__main__":
-    if len(argv) < 3:
-        print("Укажите номер запускаемой области!\n2 - Кабинеты; 7 - Цех")
+    print(argv)
+    if len(argv) < 2:
+        print("Укажите номер запускаемой области!\n1 - Кабинеты; 2 - Цех")
         exit()
     try:
         filesio = FilesIO(default_values=default_values)
-        loaded_file = filesio.get_data()
+        loaded_file, err_msg = filesio.get_data()
         if loaded_file is False:
-            raise OSError
+            raise Exception(err_msg)
         matchio = MatchIO()
         main(argv[1], argv[2].strip() == "debug")
-    except OSError:
-        print("Файл с настройками не найден. Создан файл со стандартными настройками.")
+    except Exception as exc:
+        print(exc)
         exit()
     except KeyboardInterrupt:
         exit()
