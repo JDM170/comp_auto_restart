@@ -20,7 +20,12 @@ python main.py
 
 ---
 
-Сборка:
+Сборка (без UPX):
+```
+pyinstaller --clean --console --onefile --name comp_auto_restart main.py
+```
+
+Сборка (с UPX):
 ```
 pyinstaller --clean --console --onefile --upx-dir=upx\ --name comp_auto_restart main.py
 ```
